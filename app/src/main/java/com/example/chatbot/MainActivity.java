@@ -1,9 +1,13 @@
 package com.example.chatbot;
 
+//import android.content.DialogInterface;
+import android.speech.tts.TextToSpeech;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,13 +26,21 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Locale;
+
+
+
+
+
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextToSpeech textToSpeech;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     ImageButton btnSpeak;
     TextView txtSpeechInput, outputText;
 
+
+    //ON CREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,17 +54,48 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 promptSpeechInput();
             }
-
-
         });
-}
-    /**
-     * Showing google speech input dialog
-     */
 
+
+        //For TTS initialization
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = textToSpeech.setLanguage(Locale.US);
+
+                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "The Language is not supported!");
+                    } else {
+                        Log.i("TTS", "Language Supported.");
+                    }
+                    Log.i("TTS", "Initialization success.");
+                } else {
+                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+
+
+
+
+    //ON DESTROY
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
+    }
+
+
+
+    //Showing google speech input dialog
     private void promptSpeechInput() {
-
-
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -69,9 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Receiving speech input
-     */
+    //Receiving speech input
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -82,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    String userQuery=result.get(0);
+                    String userQuery = result.get(0);
                     txtSpeechInput.setText(userQuery);
-                    RetrieveFeedTask task=new RetrieveFeedTask();
+                    RetrieveFeedTask task = new RetrieveFeedTask();
                     task.execute(userQuery);
                 }
                 break;
@@ -147,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
             text = sb.toString();
 
 
-
             JSONObject object1 = new JSONObject(text);
             JSONObject object = object1.getJSONObject("result");
             JSONObject fulfillment = null;
@@ -162,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d("karma ", "response is " + text);
             return speech;
-
         } catch (Exception ex) {
             Log.d("karma", "exception at last " + ex);
         } finally {
@@ -172,26 +211,20 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception ex) {
             }
         }
-
         return null;
     }
 
 
     class RetrieveFeedTask extends AsyncTask<String, Void, String> {
-
         @Override
         protected String doInBackground(String... voids) {
             String s = null;
             try {
-
                 s = GetText(voids[0]);
-
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 Log.d("karma", "Exception occurred " + e);
             }
-
             return s;
         }
 
@@ -200,7 +233,11 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             outputText.setText(s);
 
-
+            int speechStatus = textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+            if (speechStatus == TextToSpeech.ERROR) {
+                Log.e("TTS", "Error in converting Text to Speech!");
+                Toast.makeText(getApplicationContext(), "Error speaking test: "+TextToSpeech.ERROR, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
