@@ -1,6 +1,10 @@
 package com.example.chatbot;
 
 //import android.content.DialogInterface;
+
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.speech.tts.TextToSpeech;
 
 import android.content.ActivityNotFoundException;
@@ -26,11 +30,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-
-
-
-
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -79,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     //ON DESTROY
     @Override
     public void onDestroy() {
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             textToSpeech.shutdown();
         }
     }
-
 
 
     //Showing google speech input dialog
@@ -136,13 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Create GetText Metod
     public String GetText(String query) throws UnsupportedEncodingException {
-
         String text = "";
         BufferedReader reader = null;
 
         // Send data
         try {
-
             // Defined URL  where to send data
             URL url = new URL("https://api.api.ai/v1/query?v=20150910");
 
@@ -160,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
             JSONArray queryArray = new JSONArray();
             queryArray.put(query);
             jsonParam.put("query", queryArray);
-//            jsonParam.put("name", "order a medium pizza");
             jsonParam.put("lang", "en");
             jsonParam.put("sessionId", "1234567890");
 
@@ -172,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("karma", "json is " + jsonParam);
 
             // Get the server response
-
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line = null;
@@ -190,7 +184,9 @@ public class MainActivity extends AppCompatActivity {
 
             JSONObject object1 = new JSONObject(text);
             JSONObject object = object1.getJSONObject("result");
-            JSONObject fulfillment = null;
+            Log.d("JSON", object.toString());
+            JSONObject parameters = object.getJSONObject("parameters"), fulfillment = null;
+
             String speech = null;
 //            if (object.has("fulfillment")) {
             fulfillment = object.getJSONObject("fulfillment");
@@ -199,6 +195,18 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
 
+            if (object.has("contexts")) {
+                //Getting the context
+                String strContext = object.getJSONArray("contexts").getJSONObject(0).getString("name");
+
+                if (strContext.equals("open")) {
+                    //For Opening apps
+                    if (!openApp(parameters.getString("App_names"))) {
+                        speak("Sorry, the app was not found");
+                    }
+                }
+            }
+
 
             Log.d("karma ", "response is " + text);
             return speech;
@@ -206,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("karma", "exception at last " + ex);
         } finally {
             try {
-
                 reader.close();
             } catch (Exception ex) {
             }
@@ -233,12 +240,67 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             outputText.setText(s);
 
-            int speechStatus = textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
-            if (speechStatus == TextToSpeech.ERROR) {
-                Log.e("TTS", "Error in converting Text to Speech!");
-                Toast.makeText(getApplicationContext(), "Error speaking test: "+TextToSpeech.ERROR, Toast.LENGTH_SHORT).show();
+            //Speak text
+            speak(s);
+        }
+    }
+
+
+    //For Opening apps
+    boolean openApp(String appName) {
+        boolean blappFound = false;
+
+        final PackageManager pm = getApplicationContext().getPackageManager();
+        List<ApplicationInfo> lstInstalledApps = pm.getInstalledApplications(0);
+
+        for (int i = 0; i < lstInstalledApps.size() - 1; i++) {
+            ApplicationInfo ai = lstInstalledApps.get(i);
+
+            final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "unknown");
+            Log.d("", applicationName);
+            if (applicationName != "unknown" && applicationName.toLowerCase().trim().equals(appName)) {
+                //The actual code for opening apps
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage(ai.packageName);
+                if (launchIntent != null) {
+                    startActivity(launchIntent);//null pointer check in case package name was not found
+                }
+                blappFound = true;
+                break;
             }
         }
+
+        if (blappFound == false) {
+            for (int i = 0; i < lstInstalledApps.size() - 1; i++) {
+                ApplicationInfo ai = lstInstalledApps.get(i);
+                final String applicationName = (String) (ai != null ? pm.getApplicationLabel(ai) : "unknown");
+                if (applicationName != "unknown" && applicationName.toLowerCase().trim().contains(appName)) {
+                    //The actual code for opening apps
+                    Intent launchIntent = getPackageManager().getLaunchIntentForPackage(ai.packageName);
+                    if (launchIntent != null) {
+                        startActivity(launchIntent);//null pointer check in case package name was not found
+                    }
+                    blappFound = true;
+                    break;
+                }
+            }
+        }
+        return blappFound;
+    }
+
+
+    //For speaking any text
+    int speak(String toSpeak) {
+        int speechStatus = 0;
+        try {
+            speechStatus = textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+            if (speechStatus == TextToSpeech.ERROR) {
+                Log.e("TTS", "Error in converting Text to Speech!");
+//                Toast.makeText(getApplicationContext(), "Error speaking test: " + TextToSpeech.ERROR, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.d("error", e.toString());
+        }
+        return speechStatus;
     }
 
 }

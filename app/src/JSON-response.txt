@@ -1,0 +1,47 @@
+D/karma: response is {
+      "id": "2d1b8fba-a1d4-4319-b8b5-f84e5923ac11-13076db6",
+      "lang": "en",
+      "sessionId": "1234567890",
+      "timestamp": "2019-06-30T10:18:05.584Z",
+      "result": {
+        "source": "agent",
+        "resolvedQuery": "open WhatsApp",
+        "action": "",
+        "actionIncomplete": false,
+        "score": 1.0,
+        "parameters": {
+          "App_names": "whatsapp"
+        },
+        "contexts": [
+          {
+            "name": "open",
+            "lifespan": 5,
+            "parameters": {
+              "App_names": "whatsapp",
+              "App_names.original": "WhatsApp"
+            }
+          }
+        ],
+        "metadata": {
+          "intentId": "661baad1-6b7b-4b24-9924-6c2000522f88",
+          "intentName": "Open",
+          "webhookUsed": "false",
+          "webhookForSlotFillingUsed": "false",
+          "isFallbackIntent": "false"
+        },
+        "fulfillment": {
+          "speech": "opening whatsapp",
+          "messages": [
+            {
+              "lang": "en",
+              "type": 0,
+              "speech": "opening whatsapp"
+            }
+          ]
+        }
+      },
+      "status": {
+        "code": 200,
+        "errorType": "success"
+      }
+    }
