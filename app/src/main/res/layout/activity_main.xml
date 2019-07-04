@@ -5,76 +5,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
+    android:background="@drawable/bt1"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@drawable/rounded_textbox"
+            android:gravity="center"
+            android:text="User Says"
+            android:textColor="#0080FF"
+            />
+        <TextView
+            android:id="@+id/txtSpeechInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:textColor="#0080FF"
+
+            android:textSize="26dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@drawable/rounded_textbox"
+            android:gravity="center"
+            android:text="Reponse"
+            android:textColor="#0080FF"
+            />
+        <TextView
+            android:id="@+id/outputTex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:textColor="#0080FF"
+            android:textSize="26dp"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+       android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/btnSpeak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/ico_mic" />
+            android:src="@drawable/mic1" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:background="@drawable/rounded_textbox"
+            android:layout_margin="10dp"
             android:text="@string/tap_on_mic"
-            android:textColor="@color/white"
-            android:textSize="15dp"
+            android:textColor="#0080FF"
+            android:textSize="17dp"
             android:textStyle="normal" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User Says"
-            android:textColor="@color/white"
-            />
-        <TextView
-            android:id="@+id/txtSpeechInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:padding="20dp"
-            android:textColor="@color/white"
-            android:textSize="26dp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reponse"
-            android:textColor="@color/white"
-            />
-        <TextView
-            android:id="@+id/outputTex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:padding="20dp"
-            android:textColor="@color/white"
-            android:textSize="26dp"
-            android:textStyle="normal" />
     </LinearLayout>
 
 

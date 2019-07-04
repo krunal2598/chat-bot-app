@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:background="@drawable/allfotor"
+    android:layout_height="match_parent"
+    tools:context=".login">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_textbox"
+        android:text="Chat-Bot Auth Login"
+        android:textColor="#0080FF"
+        android:layout_margin="25dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:padding="10dp"/>
+
+    <EditText
+            android:id="@+id/email"
+            android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:padding="15dp"
+        android:background="@drawable/rounded_edittext"
+            android:hint="Email"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
+
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true"
+        android:textColor="#0080FF" />
+
+    <EditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:padding="15dp"
+        android:background="@drawable/rounded_edittext"
+            android:focusableInTouchMode="true"
+            android:hint="Password"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="15dp"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true"
+        android:textColor="#0080FF" />
+
+    <Button
+        android:id="@+id/sign_in_button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/rounded_button"
+        android:text="Sign In"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white" />
+
+    <!-- Link to Login Screen -->
+
+    <Button
+        android:id="@+id/sign_up_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/rounded_button"
+        android:text="Sign Up"
+
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <!-- Link to Forget Password -->
+
+    <TextView
+        android:id="@+id/forget_password_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_textbox"
+        android:layout_height="50dp"
+        android:layout_margin="25dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Forget Password"
+        android:textColor="#0080FF"
+        android:textStyle="bold" />
+
+</LinearLayout>
