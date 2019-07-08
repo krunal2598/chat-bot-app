@@ -3,6 +3,7 @@ package com.example.chatbot;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import com.google.firebase.auth.FirebaseUser;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -54,6 +55,7 @@ public class register extends AppCompatActivity {
                 try {
                     if (password.length() > 0 && email.length() > 0) {
                         PD.show();
+                        
                         auth.createUserWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(register.this, new OnCompleteListener<AuthResult>() {
                                     @Override

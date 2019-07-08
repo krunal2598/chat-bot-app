@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.content.Intent;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseUser;
 import android.support.annotation.NonNull;
 
 import android.util.Log;
@@ -25,6 +27,7 @@ public class login extends AppCompatActivity {
     private Button btnSignUp, btnLogin;
     private ProgressDialog PD;
 
+   // FirebaseApp.initializeApp(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
